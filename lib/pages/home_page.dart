@@ -38,6 +38,11 @@ class _HomePageState extends State<HomePage> {
   void checkboxChanged(bool? value, int index){
     setState(() {
       db.TodoList[index][1]=!db.TodoList[index][1];
+      if (db.TodoList[index][1]==true){
+        List l1 = db.TodoList[index];
+        db.TodoList.removeAt(index);
+        db.TodoList.add(l1);
+      }
     });
     db.updateDatabase();
   }
@@ -62,7 +67,8 @@ class _HomePageState extends State<HomePage> {
     showDialog(context: context, builder: (context){
       return DialogBox(controller: _controller,
       onSave: saveNewTask,
-        onCancel:()=> Navigator.of(context).pop(),
+        onCancel:()=> {Navigator.of(context).pop(),
+          _controller.clear()},
       );
     });
     db.updateDatabase();
